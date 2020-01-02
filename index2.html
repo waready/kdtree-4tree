@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+	<br>
+		<canvas id="canvas"></canvas>
+    <script>
+        class Punto{
+            constructor(xx=0,yy=0){
+                this.x=xx;
+                this.y=yy;
+            }
+        }
+		class Nodo {
+			constructor(PP, SI=null,SD=null,II=null,ID=null) 
+			{	
+                this.pp  = new Punto(PP[0],PP[1]);
+
+				this.si = SI;
+				this.sd = SD;
+                this.ii = II;
+				this.id = ID;
+			}
+		}   
+		class kdtree2d {
+			constructor() 
+			{	
+                this.raiz = null;
+			}
+
+			insertar(valor)
+			{	
+            //     if (this.raiz==null)
+            //     this.raiz = new Nodo((valor),0); //valor[g]
+            // else
+				this.ins(valor,this.raiz);
+                //console.warn(valor,this.raiz)
+			}
+			ins(valor, R, eje)
+			{	
+                console.log(valor)
+                const PP_x =valor[0];
+                const PP_y =valor[1];
+
+            if (this.raiz==null)
+                this.raiz = new Nodo((valor)); //valor[g]
+            else{
+                if(PP_x<R.pp.x){
+                    if(PP_y<R.pp.y)
+        //             Ins(PP,R->Izq,1);
+                        { if (R.si==null)
+                              R.si = new Nodo((valor));
+                        else
+                            this.ins(valor,R.si);
+                        }
+        //         else
+        //             Ins(PP,R->Der,1);
+                    else
+                    {	if (R.ii==null)
+                            R.ii = new Nodo((valor));
+                        else
+                            this.ins(valor,R.ii);
+                    }
+                }
+                else
+                {   if(PP_y<R.pp.y)
+        //             Ins(PP,R->Izq,0);
+                        { if (R.sd==null)
+                                R.sd = new Nodo((valor));
+                        else
+                            this.ins(valor,R.sd);
+                        }
+        //         else
+        //             Ins(PP,R->Der,0);
+                    else
+                    {	if (R.id==null)
+                            R.id = new Nodo((valor));
+                        else
+                            this.ins(valor,R.id);
+                    }
+                }
+            }
+
+             //   console.log( R.pp);
+                
+			}
+			mostrar(canvas2d,x,y,a)
+			{	if (this.raiz!=null)
+					this.mos(canvas2d,this.raiz,x,y,a);
+			}
+			mos(canvas2d,R,x,y,a)
+			{	                
+                if (R.si!=null)
+			    	this.mos(canvas2d,R.si,x-a/2,y+50,a/4);
+				canvas2d.beginPath();
+                canvas2d.fillText(R.pp.x,x,y);
+                canvas2d.fillText(R.pp.y,x,y+10);
+				canvas2d.stroke();
+
+				if (R.sd!=null)
+					this.mos(canvas2d,R.sd,x-a/6,y+50,a/4);
+
+                if (R.ii!=null)
+					this.mos(canvas2d,R.ii,x+a/6,y+50,a/4);
+
+                if (R.id!=null)
+					this.mos(canvas2d,R.id,x+a/2,y+50,a/4);
+			}
+		}
+		var A=new kdtree2d();
+		// A.insertar([114,143,0]);
+		// A.insertar([39,147,1]);
+		//  A.insertar([160,151,1]);
+        //  A.insertar([76,90,0]);
+		// A.insertar([54,207,0]);
+		//  A.insertar([157,185,0]);
+        //  A.insertar([152,84,0]);
+		// A.insertar([42,104,1]);
+        // A.insertar([69,167,1]);
+		//  A.insertar([2,4,0]);
+        //  A.insertar([1,2,1]);
+		// A.insertar([9,4,0]);
+		//  A.insertar([2,4,1]);
+		// // A.insertar(14);
+		// A.insertar(21);
+		// A.insertar(9);
+		// A.insertar(4);
+		// A.insertar(14);
+		// A.insertar(21);
+
+		const canvas = document.querySelector("#canvas"); // Obtener el elemento del DOM
+		canvas.width = 1000, canvas.height = 1000;
+		const canvas2d = canvas.getContext("2d");
+
+
+        //console.log(point);
+        for (var i = 0; i < 20; i++) {
+            var point = {
+                x: Math.floor(Math.random()*209),
+                y: Math.floor(Math.random()*249)
+            };
+            A.insertar([point.x,point.y]);
+        }
+
+        A.mostrar(canvas2d,500,10,500); 
+        
+	</script>
+  </body>
+</html>

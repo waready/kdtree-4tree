@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+	<br>
+		<canvas id="canvas"></canvas>
+    <script>
+		class Nodo {
+			constructor(clave_xx,clave_yy,izq=null,der=null) 
+			{	this.clave = clave_xx;
+				this.clave_y = clave_yy;
+				this.izq = izq;
+				this.der = der;
+			}
+		}
+		class Arbol {
+			constructor() 
+			{	this.raiz = null;
+			}
+			insertar(valor)
+			{	if (this.raiz==null)
+					this.raiz = new Nodo(valor);
+				else
+					this.ins(valor,this.raiz);
+			}
+			ins(valor, R)
+			{	if (valor<R.clave)
+				{	if (R.izq==null)
+						R.izq = new Nodo(valor);
+					else
+						this.ins(valor,R.izq);
+				}
+				else
+				{	if (R.der==null)
+						R.der = new Nodo(valor);
+					else
+						this.ins(valor,R.der);
+				}
+			}
+			mostrar(canvas2d,x,y,a)
+			{	if (this.raiz!=null)
+					this.mos(canvas2d,this.raiz,x,y,a);
+			}
+			mos(canvas2d,R,x,y,a)
+			{	if (R.izq!=null)
+					this.mos(canvas2d,R.izq,x-a,y+50,a/2);
+				canvas2d.beginPath();
+				canvas2d.fillText(R.clave,x,y);
+		
+				canvas2d.stroke();
+
+				if (R.der!=null)
+					this.mos(canvas2d,R.der,x+a,y+50,a/2);
+			}
+		}
+		var A=new Arbol();
+		A.insertar(17);
+		A.insertar(9);
+		A.insertar(4);
+		A.insertar(14);
+		A.insertar(21);
+		A.insertar(9);
+		A.insertar(4);
+		A.insertar(14);
+		A.insertar(21);
+
+		const canvas = document.querySelector("#canvas"); // Obtener el elemento del DOM
+		canvas.width = 800, canvas.height = 500;
+		const canvas2d = canvas.getContext("2d");
+		A.mostrar(canvas2d,300,10,150);
+	</script>
+  </body>
+</html>
